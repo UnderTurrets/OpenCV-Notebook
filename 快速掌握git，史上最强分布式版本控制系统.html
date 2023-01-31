@@ -1,0 +1,179 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>快速掌握git，史上最强分布式版本控制系统</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><p></p><div class="toc"><h3>文章目录</h3><ul><li><a href="#_9">一、本地控制</a></li><ul><li><a href="#1_10">1.在一个目录下建立仓库</a></li><ul><li><a href="#_15">删除仓库</a></li></ul><li><a href="#2_21">2.版本控制</a></li><ul><li><a href="#_22">保存到暂存区</a></li><li><a href="#_32">撤销暂存区文件</a></li><li><a href="#_42">提交到版本库</a></li><li><a href="#_47">回退</a></li><ul><li><a href="#_48">回退单一文件到上个版本</a></li><li><a href="#_53">回退到上一个版本</a></li><li><a href="#n_58">回退到上n个版本</a></li></ul><li><a href="#_62">删除未跟踪的文件</a></li><li><a href="#_79">删除已跟踪的文件</a></li><li><a href="#_85">查看当前仓库状态</a></li><li><a href="#_90">查看操作日志</a></li><li><a href="#_95">查看此分支的提交日志</a></li></ul><li><a href="#3_102">3.分支管理</a></li><ul><li><a href="#_103">创建分支</a></li><li><a href="#_108">切换分支</a></li><li><a href="#_113">查看分支</a></li><li><a href="#_118">合并分支（可能出现冲突，如两个分支都修改了同一文件）</a></li><li><a href="#_124">删除分支</a></li></ul></ul><li><a href="#_131">二、远程控制</a></li><ul><li><a href="#1ssh_132">1.获取本设备的ssh密钥</a></li><li><a href="#2_139">2.与远程库建立或删除连接</a></li><ul><li><a href="#_140">建立连接</a></li><li><a href="#_144">删除连接</a></li></ul><li><a href="#3_150">3.绑定此分支到远程库的某一分支</a></li><li><a href="#4_155">4.提交到远程库的某一分支</a></li><li><a href="#5_164">5.标签管理</a></li><ul><li><a href="#_165">打标签</a></li><li><a href="#_172">删除标签</a></li><li><a href="#_178">查看某一标签</a></li><li><a href="#_184">查看所有标签</a></li><li><a href="#_190">推送标签到远程库</a></li><li><a href="#_197">删除远程标签</a></li></ul></ul><li><a href="#_203">三、多人协作</a></li><ul><li><a href="#1bug_204">1.远古bug修复流程</a></li><li><a href="#2_223">2.版本落后于远程库而推送失败</a></li></ul></ul></div><p></p>
+<hr>
+<h1><a id="_9"></a>一、本地控制</h1>
+<h2><a id="1_10"></a>1.在一个目录下建立仓库</h2>
+<pre><code class="prism language-cpp">git init
+</code></pre>
+<h3><a id="_15"></a>删除仓库</h3>
+<pre><code class="prism language-cpp">rm <span class="token operator">-</span>rf <span class="token punctuation">.</span>git
+</code></pre>
+<h2><a id="2_21"></a>2.版本控制</h2>
+<h3><a id="_22"></a>保存到暂存区</h3>
+<p>保存某个文件的修改到暂存区</p>
+<pre><code class="prism language-cpp">git add <span class="token operator">&lt;</span>filename<span class="token operator">&gt;</span>
+</code></pre>
+<p>全部保存到暂存区</p>
+<pre><code class="prism language-cpp">git add <span class="token punctuation">.</span>
+</code></pre>
+<h3><a id="_32"></a>撤销暂存区文件</h3>
+<p>撤销某一个暂存区文件</p>
+<pre><code class="prism language-cpp">git reset HEAD <span class="token operator">&lt;</span>filename<span class="token operator">&gt;</span>
+</code></pre>
+<p>撤销所有暂存区文件</p>
+<pre><code class="prism language-cpp">git reset HEAD 
+</code></pre>
+<h3><a id="_42"></a>提交到版本库</h3>
+<pre><code class="prism language-cpp">git commit <span class="token operator">-</span>m <span class="token string">"附加信息"</span>
+</code></pre>
+<h3><a id="_47"></a>回退</h3>
+<h4><a id="_48"></a>回退单一文件到上个版本</h4>
+<pre><code class="prism language-cpp">git checkout <span class="token operator">--</span> <span class="token operator">&lt;</span>filename<span class="token operator">&gt;</span>
+</code></pre>
+<h4><a id="_53"></a>回退到上一个版本</h4>
+<pre><code class="prism language-cpp">git reset <span class="token operator">--</span>hard HEAD<span class="token operator">~</span><span class="token number">1</span>
+</code></pre>
+<h4><a id="n_58"></a>回退到上n个版本</h4>
+<pre><code class="prism language-cpp">git reset <span class="token operator">--</span>hard HEAD<span class="token operator">~</span>n
+</code></pre>
+<h3><a id="_62"></a>删除未跟踪的文件</h3>
+<pre><code class="prism language-cpp"># 删除 untracked files
+git clean <span class="token operator">-</span>f
+ 
+# 连 untracked 的目录也一起删掉
+git clean <span class="token operator">-</span>fd
+ 
+# 连 gitignore 的untrack 文件<span class="token operator">/</span>目录也一起删掉 （慎用，一般这个是用来删掉编译出来的 <span class="token punctuation">.</span>o之类的文件用的）
+git clean <span class="token operator">-</span>xfd
+ 
+# 在用上述 git clean 前，墙裂建议加上 <span class="token operator">-</span>n 参数来先看看会删掉哪些文件，防止重要文件被误删
+git clean <span class="token operator">-</span>nxfd
+git clean <span class="token operator">-</span>nf
+git clean <span class="token operator">-</span>nfd
+</code></pre>
+<h3><a id="_79"></a>删除已跟踪的文件</h3>
+<pre><code class="prism language-cpp">git rm <span class="token operator">&lt;</span>filename<span class="token operator">&gt;</span>
+</code></pre>
+<h3><a id="_85"></a>查看当前仓库状态</h3>
+<pre><code class="prism language-cpp">git status
+</code></pre>
+<h3><a id="_90"></a>查看操作日志</h3>
+<pre><code class="prism language-cpp">git reflog
+</code></pre>
+<h3><a id="_95"></a>查看此分支的提交日志</h3>
+<pre><code class="prism language-cpp">git log
+</code></pre>
+<ul>
+<li><strong>经过回退后，使用"git log"就看不到回退前的版本号了，但使用"git reflog"就可以查看</strong></li>
+</ul>
+<h2><a id="3_102"></a>3.分支管理</h2>
+<h3><a id="_103"></a>创建分支</h3>
+<pre><code class="prism language-cpp">git branch <span class="token operator">&lt;</span>name of local branch<span class="token operator">&gt;</span>
+</code></pre>
+<h3><a id="_108"></a>切换分支</h3>
+<pre><code class="prism language-cpp">git <span class="token keyword">switch</span> <span class="token operator">&lt;</span>name of local branch<span class="token operator">&gt;</span>
+</code></pre>
+<h3><a id="_113"></a>查看分支</h3>
+<pre><code class="prism language-cpp">git branch
+</code></pre>
+<h3><a id="_118"></a>合并分支（可能出现冲突，如两个分支都修改了同一文件）</h3>
+<pre><code class="prism language-cpp">git merge <span class="token operator">&lt;</span>name of local branch<span class="token operator">&gt;</span>
+git merge <span class="token operator">--</span>no<span class="token operator">-</span>ff <span class="token operator">-</span>m <span class="token string">"附加信息"</span> <span class="token operator">&lt;</span>name of local branch<span class="token operator">&gt;</span>
+</code></pre>
+<h3><a id="_124"></a>删除分支</h3>
+<pre><code class="prism language-cpp">git branch <span class="token operator">-</span>d <span class="token operator">&lt;</span>name<span class="token operator">&gt;</span>
+git branch <span class="token operator">-</span>D <span class="token operator">&lt;</span>name<span class="token operator">&gt;</span>#强行删除，慎用
+</code></pre>
+<h1><a id="_131"></a>二、远程控制</h1>
+<h2><a id="1ssh_132"></a>1.获取本设备的ssh密钥</h2>
+<pre><code class="prism language-cpp">ssh<span class="token operator">-</span>keygen <span class="token operator">-</span>t rsa <span class="token operator">-</span>C <span class="token string">"email@*.com"</span>
+</code></pre>
+<h2><a id="2_139"></a>2.与远程库建立或删除连接</h2>
+<h3><a id="_140"></a>建立连接</h3>
+<pre><code class="prism language-cpp">git romote add <span class="token operator">&lt;</span>name of the remote repository<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>SSH offered by the website<span class="token operator">&gt;</span>
+</code></pre>
+<h3><a id="_144"></a>删除连接</h3>
+<pre><code class="prism language-cpp">git remote rm <span class="token operator">&lt;</span>name of the remote repository<span class="token operator">&gt;</span>
+</code></pre>
+<h2><a id="3_150"></a>3.绑定此分支到远程库的某一分支</h2>
+<pre><code class="prism language-cpp">git branch <span class="token operator">--</span>set<span class="token operator">-</span>upstream<span class="token operator">-</span>to <span class="token operator">&lt;</span>name of local branch<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>name of the remote repository <span class="token operator">&gt;</span><span class="token operator">/</span><span class="token operator">&lt;</span>name of remote branch<span class="token operator">&gt;</span>
+</code></pre>
+<h2><a id="4_155"></a>4.提交到远程库的某一分支</h2>
+<pre><code class="prism language-cpp">git push <span class="token operator">&lt;</span>name of the remote repository<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>name of local branch<span class="token operator">&gt;</span>
+</code></pre>
+<ul>
+<li><strong>如果远程库没有对应名字的分支，那么会在远程库自动创建一个同名分支</strong></li>
+<li><strong>如果不给定&lt;name of local branch&gt;参数，那么会按照git branch --set-upstream-to绑定的关系进行推送。如果未绑定，则推送失败</strong></li>
+</ul>
+<h2><a id="5_164"></a>5.标签管理</h2>
+<h3><a id="_165"></a>打标签</h3>
+<pre><code class="prism language-cpp">git tag <span class="token operator">&lt;</span>name of tag<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>version<span class="token operator">&gt;</span>
+git tag <span class="token operator">-</span>a <span class="token operator">&lt;</span>name of tag<span class="token operator">&gt;</span> <span class="token operator">-</span>m <span class="token string">"附加信息"</span> <span class="token operator">&lt;</span>version<span class="token operator">&gt;</span> #带说明信息的标签
+</code></pre>
+<h3><a id="_172"></a>删除标签</h3>
+<pre><code class="prism language-cpp">git tag <span class="token operator">-</span>d <span class="token operator">&lt;</span>name of tag<span class="token operator">&gt;</span>
+</code></pre>
+<h3><a id="_178"></a>查看某一标签</h3>
+<pre><code class="prism language-cpp">git show <span class="token operator">&lt;</span>name of tag<span class="token operator">&gt;</span>
+</code></pre>
+<h3><a id="_184"></a>查看所有标签</h3>
+<pre><code class="prism language-cpp">git tag
+</code></pre>
+<h3><a id="_190"></a>推送标签到远程库</h3>
+<pre><code class="prism language-cpp">git push <span class="token operator">&lt;</span>name of the remote repository<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>name of tag<span class="token operator">&gt;</span>
+git push <span class="token operator">&lt;</span>name of the remote repository<span class="token operator">&gt;</span> <span class="token operator">--</span>tags #一次性推送所有标签
+</code></pre>
+<h3><a id="_197"></a>删除远程标签</h3>
+<pre><code class="prism language-cpp">git push <span class="token operator">&lt;</span>name of the remote repository<span class="token operator">&gt;</span><span class="token operator">:</span>refs<span class="token operator">/</span>tags<span class="token operator">/</span><span class="token operator">&lt;</span>name of tag<span class="token operator">&gt;</span>
+</code></pre>
+<h1><a id="_203"></a>三、多人协作</h1>
+<h2><a id="1bug_204"></a>1.远古bug修复流程</h2>
+<ol>
+<li>保存此分支的工作现场</li>
+</ol>
+<pre><code class="prism language-cpp">git stash
+</code></pre>
+<ol start="2">
+<li>切换到有bug的分支，从这个有bug的分支创建一个新分支修复bug，然后合并，<strong>保存好合并时给出的版本号</strong></li>
+<li><strong>用这个版本号</strong>，对所有存在这个bug的分支做一次相同的提交</li>
+</ol>
+<pre><code class="prism language-cpp">git cherry<span class="token operator">-</span>pick <span class="token operator">&lt;</span>version<span class="token operator">&gt;</span>
+</code></pre>
+<ol start="4">
+<li>回到工作现场，查看贮藏列表并恢复</li>
+</ol>
+<pre><code class="prism language-cpp">git stash list #列出贮藏列表
+git stash apply stash@<span class="token punctuation">{</span>n<span class="token punctuation">}</span> #根据序号n恢复到指定工作现场
+git stash drop stash@<span class="token punctuation">{</span>n<span class="token punctuation">}</span>#根据序号n删除指定工作现场
+</code></pre>
+<h2><a id="2_223"></a>2.版本落后于远程库而推送失败</h2>
+<ol>
+<li>先用git branch --set-upstream-to 绑定到指定远程分支</li>
+</ol>
+<pre><code class="prism language-cpp">git branch <span class="token operator">--</span>set<span class="token operator">-</span>upstream<span class="token operator">-</span>to <span class="token operator">&lt;</span>name of local branch<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>name of the remote repository <span class="token operator">&gt;</span><span class="token operator">/</span><span class="token operator">&lt;</span>name of remote branch<span class="token operator">&gt;</span>
+</code></pre>
+<ol start="2">
+<li>用git pull指令：抓取所绑定分支的最新版本并尝试merge。若出现冲突要手动解决</li>
+</ol>
+<pre><code class="prism language-cpp">git pull
+</code></pre>
+<ol start="3">
+<li>最后提交并推送即可</li>
+</ol>
+<pre><code class="prism language-cpp">git commit <span class="token operator">-</span>m <span class="token string">"附加信息"</span>
+git push <span class="token operator">&lt;</span>name of the remote repository<span class="token operator">&gt;</span>
+</code></pre>
+</div>
+</body>
+
+</html>
