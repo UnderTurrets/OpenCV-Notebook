@@ -299,10 +299,10 @@ for(int i=0;i<a.rows;i++){
 }
 ```
 
-* 用ptr访问可以不加Vec类型
-* 用at访问必须加Vec类型
+* 用ptr访问可以不加Vec类型，**ptr访问是最快的**
+* 用at访问必须加Vec类型，**at访问比ptr略微慢一些**
 
-## 2.9 通过迭代器遍历矩阵(recommended)
+## 2.9 通过迭代器遍历矩阵(easy but very very slow)
 
 ```
 Mat a(Size(2560,1440),CV_8UC3);
@@ -659,7 +659,6 @@ b：控制亮度增益
 
 ```
 Mat xuenai = imread("xuenai.jpg");
-resize(xuenai,xuenai,Size(1000,1000));
 imshow("xuenai", xuenai);
 for(int i=0;i<xuenai.rows;i++){
         for(int j=0;j<xuenai.cols;j++){
@@ -682,7 +681,6 @@ void Mat::convertTo( OutputArray m, int rtype, double alpha=1, double beta=0 ) c
 
 ```
 Mat xuenai = imread("xuenai.jpg");
-resize(xuenai,xuenai,Size(1000,1000));
 imshow("xuenai", xuenai);
 xuenai.convertTo(xuenai,-1,1.2,30);
 imshow("xuenai_convertTo",xuenai);
@@ -809,7 +807,7 @@ dstsize(destination size)：输出图片的尺寸，默认自动调整
 
 borderType：边界填充方式，默认为黑边。如果没有设置dstsize，则不会出现黑边，因为已经进行了自动调整
 
-## 3.12 二值化（一般只对灰度图使用）
+## 3.12 二值化（对灰度图）
 
 ```
 CV_EXPORTS_W double threshold( InputArray src, OutputArray dst,
@@ -958,7 +956,6 @@ flipcode<0;//上下加左右翻转,等价于旋转180°
 
 ```
 Mat xuenai = imread("xuenai.jpg");
-resize(xuenai,xuenai,Size(1000,1000));
 imshow("xuenai", xuenai);
 Mat xuenai_flip(xuenai.size(), xuenai.type());
 flip(xuenai, xuenai_flip, 0);
@@ -989,7 +986,6 @@ rotateCode：旋转类型
 
 ```
 Mat xuenai = imread("xuenai.jpg");
-resize(xuenai,xuenai,Size(1000,1000));
 imshow("xuenai", xuenai);
 Mat xuenai_rotate(xuenai.size(), xuenai.type());
 rotate(xuenai, xuenai_rotate, ROTATE_180);
@@ -1046,7 +1042,6 @@ M：**必须是CV_32F，不能用逗号式分隔创建**
 
 ```
 Mat xuenai = imread("xuenai.jpg");
-resize(xuenai,xuenai,Size(1000,1000));
 imshow("xuenai",xuenai);
 double  M_values[]={1,0,200,
                     0,1,200};
@@ -1081,7 +1076,6 @@ scale：生成图与原图之比
 
 ```
 Mat xuenai = imread("xuenai.jpg");
-resize(xuenai,xuenai,Size(1000,1000));
 imshow("xuenai", xuenai);
 Mat M= getRotationMatrix2D(Point2f(xuenai.cols/2,xuenai.rows/2),45,1);
 Mat xuenai_rotate(xuenai.size(),xuenai.type());
@@ -1157,7 +1151,6 @@ borderType：边界填充方式，默认为黑边
 
 ```
 Mat xuenai = imread("xuenai.jpg");
-resize(xuenai,xuenai,Size(1000,1000));
 imshow("xuenai",xuenai);
 Mat xuenai_blur(xuenai.size(),xuenai.type());
 blur(xuenai,xuenai_blur,Size(3,5));
@@ -1230,8 +1223,7 @@ borderType：边界填充方式，默认为黑边
 ### 4.2.3 效果
 
 ```
-Mat xuenai = imread("xuenai.jpg");
-    resize(xuenai,xuenai,Size(1000,1000));
+    Mat xuenai = imread("xuenai.jpg");
     imshow("xuenai",xuenai);
     Mat xuenai_Gauss(xuenai.size(),xuenai.type());
     GaussianBlur(xuenai,xuenai_Gauss,Size(-1,-1),10);
@@ -1262,8 +1254,7 @@ ksize(kernal size)：卷积核边长，**必须是正奇数**
 ### 4.3.3 效果
 
 ```
-Mat xuenai = imread("xuenai.jpg");
-    resize(xuenai,xuenai,Size(1000,1000));
+    Mat xuenai = imread("xuenai.jpg");
     imshow("xuenai",xuenai);
     Mat xuenai_median(xuenai.size(),xuenai.type());
     medianBlur(xuenai,xuenai_median,5);
@@ -1304,8 +1295,7 @@ borderType：边界填充方式，默认为黑边
 ### 4.4.3 效果
 
 ```
-Mat xuenai = imread("xuenai.jpg");
-    resize(xuenai,xuenai,Size(1000,1000));
+    Mat xuenai = imread("xuenai.jpg");
     imshow("xuenai",xuenai);
     Mat xuenai_bilateral(xuenai.size(),xuenai.type());
     bilateralFilter(xuenai,xuenai_bilateral,-1,100,10);
@@ -1334,7 +1324,7 @@ ksize(kernal size)：滤波器大小
 
 anchor：滤波器中心像素位置，取（-1，-1）表示几何中心
 
-## 4.6 腐蚀和膨胀（一般对二值图）
+## 4.6 腐蚀和膨胀（对二值图）
 
 ### 4.6.1 原理
 
@@ -1368,8 +1358,7 @@ borderValue：填充边界的值
 ### 4.6.3 效果
 
 ```
-Mat xuenai = imread("xuenai.jpg");
-    resize(xuenai,xuenai,Size(1000,1000));
+    Mat xuenai = imread("xuenai.jpg");
 
     Mat xuenai_gray(xuenai.size(),xuenai.type());
     cvtColor(xuenai,xuenai_gray,COLOR_BGR2GRAY);
@@ -1413,8 +1402,7 @@ borderValue：填充边界的值
 ### 4.6.5 效果
 
 ```
-Mat xuenai = imread("xuenai.jpg");
-    resize(xuenai,xuenai,Size(1000,1000));
+    Mat xuenai = imread("xuenai.jpg");
 
     Mat xuenai_gray(xuenai.size(),xuenai.type());
     cvtColor(xuenai,xuenai_gray,COLOR_BGR2GRAY);
@@ -1432,7 +1420,7 @@ Mat xuenai = imread("xuenai.jpg");
 
 ![](https://img-blog.csdnimg.cn/img_convert/caf9a26636f9740e51f17509b5fef700.png)
 
-## 4.7 形态学操作（一般对二值图）
+## 4.7 形态学操作（对二值图）
 
 ### 4.7.1 API
 
@@ -1492,9 +1480,7 @@ enum MorphTypes{
 #### 效果
 
 ```
-Mat xuenai = imread("xuenai.jpg");
-    resize(xuenai,xuenai,Size(1000,1000));
-
+    Mat xuenai = imread("xuenai.jpg");
     Mat xuenai_gray(xuenai.size(),xuenai.type());
     cvtColor(xuenai,xuenai_gray,COLOR_BGR2GRAY);
     Mat xuenai_threshold(xuenai.size(),xuenai.type());
@@ -1520,8 +1506,7 @@ Mat xuenai = imread("xuenai.jpg");
 #### 效果
 
 ```
-Mat xuenai = imread("xuenai.jpg");
-    resize(xuenai,xuenai,Size(1000,1000));
+    Mat xuenai = imread("xuenai.jpg");
 
     Mat xuenai_gray(xuenai.size(),xuenai.type());
     cvtColor(xuenai,xuenai_gray,COLOR_BGR2GRAY);
@@ -1548,8 +1533,7 @@ Mat xuenai = imread("xuenai.jpg");
 #### 效果
 
 ```
-Mat xuenai = imread("xuenai.jpg");
-    resize(xuenai,xuenai,Size(1000,1000));
+    Mat xuenai = imread("xuenai.jpg");
 
     Mat xuenai_gray(xuenai.size(),xuenai.type());
     cvtColor(xuenai,xuenai_gray,COLOR_BGR2GRAY);
@@ -1576,8 +1560,7 @@ Mat xuenai = imread("xuenai.jpg");
 #### 效果
 
 ```
-Mat xuenai = imread("xuenai.jpg");
-    resize(xuenai,xuenai,Size(1000,1000));
+    Mat xuenai = imread("xuenai.jpg");
 
     Mat xuenai_gray(xuenai.size(),xuenai.type());
     cvtColor(xuenai,xuenai_gray,COLOR_BGR2GRAY);
@@ -1604,8 +1587,7 @@ Mat xuenai = imread("xuenai.jpg");
 #### 效果
 
 ```
-Mat xuenai = imread("xuenai.jpg");
-    resize(xuenai,xuenai,Size(1000,1000));
+    Mat xuenai = imread("xuenai.jpg");
 
     Mat xuenai_gray(xuenai.size(),xuenai.type());
     cvtColor(xuenai,xuenai_gray,COLOR_BGR2GRAY);
@@ -1651,7 +1633,7 @@ Mat xuenai = imread("xuenai.jpg");
 
 输出二值图像
 
-## 4.8 选择合适的边缘检测输出图像的深度
+## 4.8 边缘检测：选择合适的输出深度
 
 参照以下表格
 
@@ -1661,10 +1643,57 @@ Mat xuenai = imread("xuenai.jpg");
 | CV_16U/CV_16S | CV_32F/CV_64F        |
 | CV_32F        | CV_32F/CV_64F        |
 | CV_64F        | CV_64F               |
+### 4.8.1 normalize归一化函数
 
-### 4.8.1 convertScaleAbs恢复深度为CV_8U
-
+```cpp
+CV_EXPORTS_W void normalize( InputArray src, InputOutputArray dst, double alpha = 1, double beta = 0,
+                             int norm_type = NORM_L2, int dtype = -1, InputArray mask = noArray());
 ```
+
+src(source)：输入数组
+
+dst(destination)：输出数组
+
+alpha ：**如果norm_type为NORM_MINMAX ，则alpha为最小值或最大值；如果norm_type为其他类型，则为归一化要乘的系数**
+
+beta ：**如果norm_type为NORM_MINMAX ，则beta为最小值或最大值；如果norm_type为其他类型，beta被忽略.**
+
+norm_type ：归一化类型
+
+dtype ：输出数组的深度，若输入-1则表示与src一致。**如果不能判断需要的深度，则可以输入-1然后使用convertScaleAbs绝对值化，这也是最推荐的做法，而不推荐自己判断深度**。
+
+mask ：掩码，用于指示函数是否仅仅对指定的元素进行操作。大小必须与src保持一致。具体用法见8.1.4
+####  归一化类型（只介绍常用的四种）
+
+```cpp
+enum NormTypes {
+                NORM_INF       = 1,
+                NORM_L1        = 2,
+                NORM_L2        = 4,
+                NORM_L2SQR     = 5,
+                NORM_HAMMING   = 6,
+                NORM_HAMMING2  = 7,
+                NORM_TYPE_MASK = 7, //!< bit-mask which can be used to separate norm type from norm flags
+                NORM_RELATIVE  = 8, //!< flag
+                NORM_MINMAX    = 32 //!< flag
+};
+ ```
+
+ - NORM_L1        
+![在这里插入图片描述](https://img-blog.csdnimg.cn/377e1301b4e04957bf51a4a6f984dd99.png#pic_center)
+- NORM_L2        
+![在这里插入图片描述](https://img-blog.csdnimg.cn/43eb9e08647946eea3008c772bb7787f.png#pic_center)
+
+- NORM_INF       
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/6b7aa2691e9740fd982f79d38cfc7025.png#pic_center)
+
+- NORM_MINMAX(recommended)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/c14ae1eed1e949b0852b93585f71a792.png#pic_center)
+
+### 4.8.2 convertScaleAbs绝对值化
+
+```cpp
 CV_EXPORTS_W void convertScaleAbs(InputArray src, OutputArray dst,
                                   double alpha = 1, double beta = 0);
 ```
@@ -1673,7 +1702,7 @@ src(source)：输入图片
 
 dst(destination)：输出图片
 
-## 4.9 sobel
+## 4.9 sobel（对灰度图）
 
 ### 4.9.1 卷积核形状（ksize=3）
 
@@ -1717,14 +1746,13 @@ borderType：边界填充方式，默认为黑边
 
 1. 用cvtColor函数转**灰度图**
 2. **在x,y方向上分别各调用一次Sobel**
-3. **用convertScaleAbs函数转换到原格式，否则无法显示**
+3. **用convertScaleAbs函数转换到CV_8U，否则无法显示**
 4. **用addWeighted函数把两张输出图片加在一起**
 
 ### 4.9.4 同时在x,y方向上调用Sobel和分开调用的效果对比
 
 ```
 Mat xuenai = imread("xuenai.jpg");
-resize(xuenai,xuenai,Size(1000,1000));
 imshow("xuenai", xuenai);
 
 //转灰度图
@@ -1744,7 +1772,6 @@ convertScaleAbs(xuenai_xsobel,xuenai_xsobel);
 Sobel(xuenai_gray,xuenai_ysobel,CV_16S,0,1,3);
 convertScaleAbs(xuenai_ysobel,xuenai_ysobel);
 addWeighted(xuenai_xsobel,0.5,xuenai_ysobel,0.5,0,xuenai_sobel2);
-convertScaleAbs(xuenai_sobel2,xuenai_sobel2);
 imshow("xuenai_sobel2",xuenai_sobel2);
 waitKey();
 ```
@@ -1753,7 +1780,7 @@ waitKey();
 
 **可以看到效果差了很多**
 
-## 4.10 scharr
+## 4.10 scharr（对灰度图）
 
 ### 4.10.1 卷积核形状（ksize恒定为3）
 
@@ -1796,10 +1823,10 @@ borderType：边界填充方式，默认为黑边
 
 1. 用cvtColor函数转**灰度图**
 2. **在x,y方向上分别各调用一次Scharr**
-3. **用convertScaleAbs函数转换到原格式，否则无法显示**
+3. **用convertScaleAbs函数转换到CV_8U，否则无法显示**
 4. **用addWeighted函数把两张输出图片加在一起**
 
-## 4.11 Laplacian
+## 4.11 Laplacian（对灰度图）
 
 ### 4.11.1 卷积核形状（ksize=3）
 
@@ -1836,7 +1863,7 @@ borderType：边界填充方式，默认为黑边
 1. **用中值滤波等操作平滑处理**
 2. 用cvtColor函数转**灰度图**
 3. 用Laplacian函数处理
-4. **用convertScaleAbs函数转换到原格式，否则无法显示**
+3. **用convertScaleAbs函数转换到CV_8U，否则无法显示**
 
 ## 4.12 Canny（recommended）
 
@@ -1865,13 +1892,12 @@ L2gradient：计算图像梯度幅度的标识，默认为false，表示L1范数
 ### 4.12.2 流程
 
 1. **用中值滤波等操作平滑处理**
-2. 用Canny函数处理
+2. 用Canny函数处理  **（不支持原地运算）**
 
 ### 4.12.3 效果
 
 ```
-Mat xuenai = imread("xuenai.jpg");
-    resize(xuenai,xuenai,Size(1000,1000));
+    Mat xuenai = imread("xuenai.jpg");
     imshow("xuenai",xuenai);
 
     Mat xuenai_canny(xuenai.size(),xuenai.type());
@@ -1881,11 +1907,72 @@ Mat xuenai = imread("xuenai.jpg");
 ```
 
 ![](https://img-blog.csdnimg.cn/img_convert/e0509f034d9e5e414f1d1e0cf362540c.png)
+## 4.13 添加噪声
+为了检测算法的稳定性，常常需要在图片中人为地添加一些噪声来进行检验。
+###  4.13.1 椒盐噪声
 
+```cpp
+static void addSaltNoise(const Mat& src,Mat& dst,int num=1000)
+{
+    dst=src.clone();
+    for (int k = 0; k < num; k++)
+    {
+        //随机取值行列，得到像素点(i,j)
+        int i = rand() % dst.rows;
+        int j = rand() % dst.cols;
+        //修改像素点(i,j)的像素值
+        for(int channel=0;channel<src.channels();channel++){
+            dst.ptr(i,j)[channel]=255;
+        }
+    }
+    for (int k = 0; k < num; k++)
+    {
+        //随机取值行列
+        default_random_engine engine;
+        uniform_int_distribution<unsigned>u(0,10000);
+        int i = rand() % dst.rows;
+        int j = rand() % dst.cols;
+        //修改像素点(i,j)的像素值
+        for(int channel=0;channel<src.channels();channel++){
+            dst.ptr(i,j)[channel]=0;
+        }
+    }
+    return;
+}
+```
+src(source)：输入图片
+dst(destination)：输出图片
+num(number)：噪声的个数
+###  4.13.2 高斯噪声
+
+```cpp
+static void addGaussianNoise(const Mat& src,Mat& dst,InputArray meanValue=10,InputArray std=36){
+    dst=src.clone();
+    //构造高斯噪声矩阵
+    Mat noise(dst.size(),dst.type());
+    RNG rng(time(NULL));
+    rng.fill(noise, RNG::NORMAL, meanValue, std);
+    //将高斯噪声矩阵与原图像叠加得到含噪图像
+    dst+=noise;
+    return ;
+}
+```
+src(source)：输入图片
+dst(destination)：输出图片
+meanValue：高斯函数均值
+std(standard deviation)：高斯函数标准差
+####  随机数填充矩阵
+
+```cpp
+void RNG::fill( InputOutputArray mat, int distType, InputArray a, InputArray b, bool saturateRange = false );
+```
+mat：输入输出矩阵，最多支持4通道，超过4通道先用reshape()改变结构
+distType：可选UNIFORM 或 NORMAL，分别表示均匀分布和高斯分布
+a：disType是UNIFORM,a表示下界(闭区间)；disType是NORMAL,a表示均值
+b：disType是UNIFORM,b表示上界(开区间)；disType是NORMAL,b表示标准差
+saturateRange：只针对均匀分布有效。当为真的时候，会先把产生随机数的范围变换到数据类型的范围，再产生随机数；如果为假，会先产生随机数，再进行截断到数据类型的有效区间。
 # 5.画几何图形
-
 ## 5.1 直线
-
 ### 5.1.1 API
 
 ```
@@ -2149,8 +2236,7 @@ winname(window name)：窗体名字
 ### 6.3.2 效果
 
 ```
-Mat xuenai = imread("xuenai.jpg");
-    resize(xuenai,xuenai,Size(1000,1000));
+    Mat xuenai = imread("xuenai.jpg");
     imshow("xuenai",xuenai);
 
     namedWindow("xuenai_rotate");
@@ -2199,7 +2285,6 @@ void RotateonChange(int,void *userdata) {
 }
 int main(){
     Mat xuenai = imread("xuenai.jpg");
-    resize(xuenai,xuenai,Size(1000,1000));
     imshow("xuenai",xuenai);
 
     Mat xuenai_rotate(xuenai.size(), xuenai.type());
@@ -2262,17 +2347,9 @@ offset：额外偏移量，**在每一个检测出的轮廓点上加上该偏移
 
 ```
 enum RetrievalModes {
-    /** retrieves only the extreme outer contours. It sets `hierarchy[i][2]=hierarchy[i][3]=-1` for
-    all the contours. */
     RETR_EXTERNAL  = 0,
-    /** retrieves all of the contours without establishing any hierarchical relationships. */
     RETR_LIST      = 1,
-    /** retrieves all of the contours and organizes them into a two-level hierarchy. At the top
-    level, there are external boundaries of the components. At the second level, there are
-    boundaries of the holes. If there is another contour inside a hole of a connected component, it
-    is still put at the top level. */
     RETR_CCOMP     = 2,
-    /** retrieves all of the contours and reconstructs a full hierarchy of nested contours.*/
     RETR_TREE      = 3,
 };
 ```
@@ -2307,16 +2384,9 @@ enum RetrievalModes {
 
 ```
 enum ContourApproximationModes {
-    /** stores absolutely all the contour points. That is, any 2 subsequent points (x1,y1) and
-    (x2,y2) of the contour will be either horizontal, vertical or diagonal neighbors, that is,
-    max(abs(x1-x2),abs(y2-y1))==1. */
     CHAIN_APPROX_NONE      = 1,
-    /** compresses horizontal, vertical, and diagonal segments and leaves only their end points.
-    For example, an up-right rectangular contour is encoded with 4 points. */
     CHAIN_APPROX_SIMPLE    = 2,
-    /** applies one of the flavors of the Teh-Chin chain approximation algorithm @cite TehChin89 */
     CHAIN_APPROX_TC89_L1   = 3,
-    /** applies one of the flavors of the Teh-Chin chain approximation algorithm @cite TehChin89 */
     CHAIN_APPROX_TC89_KCOS = 4
 };
 ```
@@ -2436,4 +2506,221 @@ CV_EXPORTS_W Rect boundingRect( InputArray array );
 ```
 
 points：输入点集
+#  8.特征工程
+##  8.1 模板匹配
+###  8.1.1 原理 
+模板图像在原图像上从原点开始移动，计算**模板与原图被模板覆盖的地方**的差别程度，计算方法有几种，然后将每次计算的结果放进输出矩阵。若原图像为A\*B大小，模板为a\*b大小，则 **输出矩阵为(A-a+1)*(B-b+1)** 大小。
+###  8.1.2 API
+
+```cpp
+CV_EXPORTS_W void matchTemplate( InputArray image, InputArray templ,
+                                 OutputArray result, int method, InputArray mask = noArray() );
+```
+image：输入图像
+
+
+templ(template)：模板图像
+
+result：输出矩阵，**深度为CV_32FC1**。若原图像为A\*B大小，模板为a\*b大小，则 **输出矩阵为(A-a+1)*(B-b+1)** 大小。
+
+method：模板匹配计算方法。
+
+mask：掩码图像。**其大小与模板图像必须相同，且必须为灰度图**。匹配时，对于掩码中的非0像素匹配算法起作用，掩码中的灰度值为0的像素位置，匹配算法不起作用。
+###  8.1.3 模板匹配计算方法
+
+```cpp
+enum TemplateMatchModes {
+    TM_SQDIFF        = 0, 
+    TM_SQDIFF_NORMED = 1, 
+    TM_CCORR         = 2, 
+    TM_CCORR_NORMED  = 3, 
+    TM_CCOEFF        = 4, 
+    TM_CCOEFF_NORMED = 5 
+};
+
+```
+TM_SQDIFF：计算平方误差，计算出来的值越小，则匹配得越好
+TM_CCORR：计算相关性，计算出来的值越大，则匹配得越好
+TM_CCOEFF：计算相关系数，计算出来的值越大，则匹配得越好
+TM_SQDIFF_NORMED：计算归一化平方误差，计算出来的值越接近0，则匹配得越好
+TM_CCORR_NORMED：计算归一化相关性，计算出来的值越接近1，则匹配得越好
+TM_CCOEFF_NORMED：计算归一化相关系数，计算出来的值越接近1，则匹配得越好
+![在这里插入图片描述](https://img-blog.csdnimg.cn/16c0a3fe93e740e98bb3318eef303a96.png#pic_center)
+###  8.1.4 掩码的使用
+在进行特征匹配时，我们有时并不需要用整个图片作为模板，**因为模板的背景可能会干扰匹配的结果**。因此，我们需要加入掩码，就可以屏蔽掉背景进行模板匹配
+####  获得掩码
+
+ 1. 模板图像转灰度图
+ 2. 二值化屏蔽背景
+###  8.1.5 效果
+
+```cpp
+        Mat xuenai = imread("xuenai.jpg");
+        imshow("xuenai",xuenai);
+        
+        Mat templ= imread("xuenai_rect.jpg");
+        imshow("template",templ);
+        Mat match_result;
+        matchTemplate(xuenai,templ,match_result,TM_SQDIFF);
+
+        Point temLoc;
+        Point minLoc;
+        Point maxLoc;
+        double min,max;
+        minMaxLoc(match_result,&min,&max,&minLoc,&maxLoc);
+        temLoc=minLoc;
+
+        rectangle(xuenai,Rect(temLoc.x,temLoc.y,templ.cols,templ.rows),Scalar(0,0,255));
+        imshow("xuenai_match",xuenai);
+```
+![在这里插入图片描述](https://img-blog.csdnimg.cn/906b5f8c8b4446eca64b3f9883b6188c.png#pic_center)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/8be117c0005b4843bd1e480a09cc7f7d.png#pic_center)
+
+
+
+###  8.1.5 模板匹配的缺陷
+####  无法应对旋转
+
+```cpp
+        Mat xuenai = imread("xuenai.jpg");
+        rotate(xuenai,xuenai,ROTATE_90_CLOCKWISE);
+        imshow("xuenai",xuenai);
+
+        Mat templ= imread("xuenai_rect.jpg");
+        Mat match_result;
+        matchTemplate(xuenai,templ,match_result,TM_SQDIFF);
+
+        Point temLoc;
+        Point minLoc;
+        Point maxLoc;
+        double min,max;
+        minMaxLoc(match_result,&min,&max,&minLoc,&maxLoc);
+        temLoc=minLoc;
+
+        rectangle(xuenai,Rect(temLoc.x,temLoc.y,templ.cols,templ.rows),Scalar(0,0,255));
+        imshow("xuenai_match",xuenai);
+```
+![在这里插入图片描述](https://img-blog.csdnimg.cn/f4c272690da049688bea5bbd14db6a22.png#pic_center)
+
+
+####  无法应对缩放
+
+```cpp
+        Mat xuenai = imread("xuenai.jpg");
+        resize(xuenai,xuenai,Size(500,500));
+        imshow("xuenai",xuenai);
+
+        Mat templ= imread("xuenai_rect.jpg");
+        Mat match_result;
+        matchTemplate(xuenai,templ,match_result,TM_SQDIFF);
+
+        Point temLoc;
+        Point minLoc;
+        Point maxLoc;
+        double min,max;
+        minMaxLoc(match_result,&min,&max,&minLoc,&maxLoc);
+        temLoc=minLoc;
+
+        rectangle(xuenai,Rect(temLoc.x,temLoc.y,templ.cols,templ.rows),Scalar(0,0,255));
+        imshow("xuenai_match",xuenai);
+```
+![在这里插入图片描述](https://img-blog.csdnimg.cn/a7a6d393150147b3916fc8450633232d.png#pic_center)
+##  8.2 cornerHarris（对灰度图）
+###  8.2.1 角点的描述
+
+ - 一阶导数(即灰度的梯度)的局部最大所对应的像素点；
+ - 两条及两条以上边缘的交点；
+ - 图像中梯度值和梯度方向的变化速率都很高的点；
+ - 角点处的一阶导数最大，二阶导数为零，指示物体边缘变化不连续的方向。
+
+###  8.2.2 原理（前置知识要求：线性代数）(bolcksize=2的情况)
+使用一个固定窗口在图像上进行任意方向上的滑动，比较滑动前与滑动后两种情况，窗口中的像素灰度变化程度，如果存在任意方向上的滑动，都有着较大灰度变化，那么我们可以认为该窗口中存在角点。
+考虑到一个灰度图像 . 划动窗口  (with displacements  在x方向和  方向)  计算像素灰度变化。
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/a4ba8fb091bf40fc84a5e206b522d237.png#pic_center)
+
+
+其中:
+- w(x,y) is the window at position (x,y)
+- I(x,y) is the intensity at (x,y)
+- I(x+u,y+v) is the intensity at the moved window (x+u,y+v)、
+
+为了寻找带角点的窗口，搜索像素灰度变化较大的窗口。于是, 我们期望最大化以下式子:
+![在这里插入图片描述](https://img-blog.csdnimg.cn/c2defb22ed5240a4a57cd7535956b97a.png#pic_center)
+泰勒展开:
+![在这里插入图片描述](https://img-blog.csdnimg.cn/a2612fdd83e547e2bb4fa0c22205a6bb.png#pic_center)
+
+ - Ix，Iy是通过**sobel算子**计算的一阶导数
+
+矩阵化:
+![在这里插入图片描述](https://img-blog.csdnimg.cn/059f87c8f0c8499bb1cabdbeba91023b.png#pic_center)
+得二次型:
+![在这里插入图片描述](https://img-blog.csdnimg.cn/28b99fb274df4ec8ba89c7b92432c150.png#pic_center)
+因此有等式:
+![在这里插入图片描述](https://img-blog.csdnimg.cn/907f9a4b10c14ab792cddf69273e6c87.png#pic_center)
+每个窗口中计算得到一个值。这个值决定了这个窗口中是否包含了角点。
+![在这里插入图片描述](https://img-blog.csdnimg.cn/9224ab1492c748b1b3bc9cf879feadc7.png#pic_center)
+
+其中，det(M) = 矩阵M的行列式，trace(M) = 矩阵M的迹
+- R为正值时，检测到的是角点，R为负时检测到的是边，R很小时检测到的是平坦区域。
+###  8.2.3 API
+
+```cpp
+CV_EXPORTS_W void cornerHarris( InputArray src, OutputArray dst, int blockSize,
+                                int ksize, double k,
+                                int borderType = BORDER_DEFAULT );
+```
+src(source)：输入图片 **（灰度图）**，**深度要求：CV_8UC1或CV_32FC1**
+
+dst(destination)：输出图片
+
+bolckSize：检测窗口的大小，**越大则对角点越敏感，一般取2**
+
+ksize(kernal size)：使用sobel算子计算一阶导数时的滤波器大小，一般取3即可。
+
+k：计算用到的系数，**公认一般取值在0.02~0.06。**
+
+borderType ：边界填充方式，默认为黑边。
+
+###  8.2.4 流程
+
+ 1. 转灰度图
+ 2. 使用cornerHarris函数检测
+ 3. **使用normalize函数归一化处理和convertScaleAbs绝对化**
+ 4. 遍历输出图像并筛选角点。**不要使用迭代器的遍历方式，因为太慢！**
+ 
+- 经过实测，以下这种**用行数调用ptr函数**的遍历方式是最快的
+```cpp
+        Mat xuenai = imread("xuenai.jpg");
+        imshow("xuenai", xuenai);
+
+//转灰度图
+        Mat xuenai_gray(xuenai.size(),xuenai.type());
+        cvtColor(xuenai,xuenai_gray,COLOR_BGR2GRAY);
+
+        Mat xuenai_harris;
+        cornerHarris(xuenai_gray,xuenai_harris,2,3,0.04);
+        normalize(xuenai_harris,xuenai_harris,0,255,NORM_MINMAX,-1);
+        convertScaleAbs(xuenai_harris,xuenai_harris);
+
+        namedWindow("xuenai_harris");
+        createTrackbar("threshold","xuenai_harris", nullptr,255);
+
+        while (1) {
+            int thres = getTrackbarPos("threshold", "xuenai_harris");
+            if(thres==0)thres=100;
+            Mat harris_result=xuenai.clone();
+            for(int i=0;i<xuenai_harris.rows;i++){
+                uchar * ptr =xuenai_harris.ptr(i);
+                for(int j=0;j<xuenai_harris.cols;j++){
+                    int value=(int) *ptr;
+                    if(value>thres){
+                        circle(harris_result, Point(j,i), 3, Scalar(0, 0, 255));
+                    }
+                    ptr++;
+                }
+            }
+```
+![在这里插入图片描述](https://img-blog.csdnimg.cn/16d050f0065d4586b3b70bcfc00e9baf.png#pic_center)
+##  8.3  Shi-Tomasi（对灰度图）
 
