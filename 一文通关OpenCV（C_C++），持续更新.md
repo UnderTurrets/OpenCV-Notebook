@@ -106,7 +106,7 @@ CV_64FC4:占64位的float char 四通道
 
 ## 2.1 全零矩阵
 
-```
+```cpp
 CV_NODISCARD_STD static MatExpr Mat::zeros(int rows, int cols, int type);
 CV_NODISCARD_STD static MatExpr Mat::zeros(Size size, int type);
 
@@ -127,7 +127,7 @@ size:Size（宽（列数），高（行数））
 
 ## 2.2 全一矩阵
 
-```
+```cpp
 CV_NODISCARD_STD static MatExpr Mat::ones(int rows, int cols, int type);
 CV_NODISCARD_STD static MatExpr Mat::ones(Size size, int type);
 
@@ -145,7 +145,7 @@ size:Size（宽（列数），高（行数））
 
 ## 2.3 单位矩阵
 
-```
+```cpp
 CV_NODISCARD_STD static MatExpr Mat::eye(int rows, int cols, int type);
 CV_NODISCARD_STD static MatExpr Mat::eye(Size size, int type);
 ```
@@ -160,19 +160,19 @@ size:Size（宽（列数），高（行数））
 
 ## 2.4 矩阵转置
 
-```
+```cpp
 MatExpr Mat::t() const;
 ```
 
 ## 2.5 求逆矩阵
 
-```
+```cpp
 MatExpr Mat::inv(int method=DECOMP_LU) const;
 ```
 
 ## 2.6 逗号式分隔创建矩阵，常用于自定义卷积核
 
-```
+```cpp
 template<typename _Tp> inline
 Mat_<_Tp>::Mat_(int _rows, int _cols)
     : Mat(_rows, _cols, traits::Type<_Tp>::value)
@@ -210,7 +210,7 @@ Mat b=Mat_<double>(Size(2,2))<<(1,2,3,4);
 
 ## 2.7 矩阵定义(只列出常用的)
 
-```
+```cpp
 Mat::Mat() CV_NOEXCEPT;
 Mat::Mat(int rows, int cols, int type);
 Mat::Mat(Size size, int type);
@@ -242,7 +242,7 @@ size:Size（宽（列数），高（行数））
 
 ### 2.8.1 Vec类型
 
-```
+```cpp
 typedef Vec<uchar, 2> Vec2b;
 typedef Vec<uchar, 3> Vec3b;
 typedef Vec<uchar, 4> Vec4b;
@@ -274,7 +274,7 @@ typedef Vec<double, 6> Vec6d;
 
 以下为实例
 
-```
+```cpp
 Mat a(Size(2560,1440),CV_8UC3);
 for(int i=0;i<a.rows;i++){
       for(int j=0;j<a.cols;j++){
@@ -304,7 +304,7 @@ for(int i=0;i<a.rows;i++){
 
 ## 2.9 通过迭代器遍历矩阵(easy but very very slow)
 
-```
+```cpp
 Mat a(Size(2560,1440),CV_8UC3);
 for(auto iter=a.begin<Vec3b>();iter!=a.end<Vec3b>();iter++){
       iter[0]=255;
@@ -317,7 +317,7 @@ for(auto iter=a.begin<Vec3b>();iter!=a.end<Vec3b>();iter++){
 
 ## 3.1 图片读取
 
-```
+```cpp
 CV_EXPORTS_W Mat imread( const String& filename, int flags = IMREAD_COLOR );
 enum ImreadModes {
 
@@ -364,7 +364,7 @@ enum ImreadModes {
 
 ## 3.2 创建窗口
 
-```
+```cpp
 CV_EXPORTS_W void namedWindow(const String& winname, int flags = WINDOW_AUTOSIZE);
 ```
 
@@ -372,7 +372,7 @@ winname(window name)：窗体名
 
 ## 3.3 图片显示
 
-```
+```cpp
 CV_EXPORTS_W void imshow(const String& winname, InputArray mat);
 ```
 
@@ -380,7 +380,7 @@ winname(window name)：窗体名
 
 若窗体未创建，会自动进行创建
 
-```
+```cpp
 CV_EXPORTS_W int waitKey(int delay = 0);
 ```
 
@@ -390,7 +390,7 @@ CV_EXPORTS_W int waitKey(int delay = 0);
 
 ## 3.4 图片保存
 
-```
+```cpp
 CV_EXPORTS_W bool imwrite( const String& filename, InputArray img,
               const std::vector<int>& params = std::vector<int>());
 ```
@@ -399,7 +399,7 @@ filename：保存的文件名
 
 ## 3.5 视频输出
 
-```
+```cpp
 CV_WRAP explicit VideoCapture(const String& filename, int apiPreference = CAP_ANY);
   
 CV_WRAP explicit VideoCapture(const String& filename, int apiPreference, const std::vector<int>& params);
@@ -431,7 +431,7 @@ CV_WRAP explicit VideoCapture(int index, int apiPreference, const std::vector<in
 
 ### 3.5.4 演示
 
-```
+```cpp
 VideoCapture video(<filename>);
     while (1){
         Mat fps;
@@ -447,7 +447,7 @@ VideoCapture video(<filename>);
 
 #### API（一）
 
-```
+```cpp
 CV_EXPORTS void split(const Mat& src, Mat* mvbegin);
 ```
 
@@ -457,7 +457,7 @@ mvbegin(mat vector begin)：分离后的Mat数组。
 
 #### API（二）
 
-```
+```cpp
 CV_EXPORTS_W void split(InputArray m, OutputArrayOfArrays mv);
 ```
 
@@ -469,7 +469,7 @@ mv(mat vector)：分离后的的Mat数组，**可以使用STL容器vector。**
 
 #### API（一）
 
-```
+```cpp
 CV_EXPORTS void merge(const Mat* mv, size_t count, OutputArray dst);
 ```
 
@@ -481,7 +481,7 @@ dst(destination)：输出图片。
 
 #### API（二）
 
-```
+```cpp
 CV_EXPORTS_W void merge(InputArrayOfArrays mv, OutputArray dst);
 ```
 
@@ -499,7 +499,7 @@ code：转换码
 
 ### 3.7.2 转换类型和转换码
 
-1. RGB和BGR（opencv默认的彩色图像的颜色空间是BGR）颜色空间的转换
+-  RGB和BGR（opencv默认的彩色图像的颜色空间是BGR）颜色空间的转换
 
 cv::COLOR_BGR2RGB
 
@@ -509,19 +509,19 @@ cv::COLOR_RGBA2BGRA
 
 cv::COLOR_BGRA2RGBA
 
-1. 向RGB和BGR图像中增添alpha通道
+-   向RGB和BGR图像中增添alpha通道
 
 cv::COLOR_RGB2RGBA
 
 cv::COLOR_BGR2BGRA
 
-1. 从RGB和BGR图像中去除alpha通道
+-   从RGB和BGR图像中去除alpha通道
 
 cv::COLOR_RGBA2RGB
 
 cv::COLOR_BGRA2BGR
 
-1. 从RBG和BGR颜色空间转换到灰度空间
+-  从RBG和BGR颜色空间转换到灰度空间
 
 cv::COLOR_RGB2GRAY
 
@@ -531,7 +531,7 @@ cv::COLOR_RGBA2GRAY
 
 cv::COLOR_BGRA2GRAY
 
-1. 从灰度空间转换到RGB和BGR颜色空间
+-  从灰度空间转换到RGB和BGR颜色空间
 
 cv::COLOR_GRAY2RGB
 
@@ -541,7 +541,7 @@ cv::COLOR_GRAY2RGBA
 
 cv::COLOR_GRAY2BGRA
 
-1. RGB和BGR颜色空间与BGR565颜色空间之间的转换
+-  RGB和BGR颜色空间与BGR565颜色空间之间的转换
 
 cv::COLOR_RGB2BGR565
 
@@ -559,13 +559,13 @@ cv::COLOR_BGR5652RGBA
 
 cv::COLOR_BGR5652BGRA
 
-1. 灰度空间与BGR565之间的转换
+-  灰度空间与BGR565之间的转换
 
 cv::COLOR_GRAY2BGR555
 
 cv::COLOR_BGR5552GRAY
 
-1. RGB和BGR颜色空间与CIE XYZ之间的转换
+-  RGB和BGR颜色空间与CIE XYZ之间的转换
 
 cv::COLOR_RGB2XYZ
 
@@ -575,7 +575,7 @@ cv::COLOR_XYZ2RGB
 
 cv::COLOR_XYZ2BGR
 
-1. RGB和BGR颜色空间与uma色度（YCrCb空间）之间的转换
+-  RGB和BGR颜色空间与uma色度（YCrCb空间）之间的转换
 
 cv::COLOR_RGB2YCrCb
 
@@ -585,7 +585,7 @@ cv::COLOR_YCrCb2RGB
 
 cv::COLOR_YCrCb2BGR
 
-1. RGB和BGR颜色空间与HSV颜色空间之间的相互转换
+-  RGB和BGR颜色空间与HSV颜色空间之间的相互转换
 
 cv::COLOR_RGB2HSV
 
@@ -595,7 +595,7 @@ cv::COLOR_HSV2RGB
 
 cv::COLOR_HSV2BGR
 
-1. RGB和BGR颜色空间与HLS颜色空间之间的相互转换
+-  RGB和BGR颜色空间与HLS颜色空间之间的相互转换
 
 cv::COLOR_RGB2HLS
 
@@ -605,7 +605,7 @@ cv::COLOR_HLS2RGB
 
 cv::COLOR_HLS2BGR
 
-1. RGB和BGR颜色空间与CIE Lab颜色空间之间的相互转换
+-   RGB和BGR颜色空间与CIE Lab颜色空间之间的相互转换
 
 cv::COLOR_RGB2Lab
 
@@ -615,7 +615,7 @@ cv::COLOR_Lab2RGB
 
 cv::COLOR_Lab2BGR
 
-1. RGB和BGR颜色空间与CIE Luv颜色空间之间的相互转换
+-  RGB和BGR颜色空间与CIE Luv颜色空间之间的相互转换
 
 cv::COLOR_RGB2Luv
 
@@ -625,7 +625,7 @@ cv::COLOR_Luv2RGB
 
 cv::COLOR_Luv2BGR
 
-1. Bayer格式（raw data）向RGB或BGR颜色空间的转换
+-   Bayer格式（raw data）向RGB或BGR颜色空间的转换
 
 cv::COLOR_BayerBG2RGB
 
@@ -647,7 +647,7 @@ cv::COLOR_BayerGR2BGR
 
 ### 3.8.1 概述
 
-```
+```cpp
 Mat.ptr(i,j)=Mat.ptr(i,j)*a+b
 ```
 
@@ -657,7 +657,7 @@ b：控制亮度增益
 
 ### 3.8.2 手动（使用saturate_cast函数确保输出值不溢出范围）
 
-```
+```cpp
 Mat xuenai = imread("xuenai.jpg");
 imshow("xuenai", xuenai);
 for(int i=0;i<xuenai.rows;i++){
@@ -675,7 +675,7 @@ waitKey();
 
 ### 3.8.3 调用API：Mat::convertTo
 
-```
+```cpp
 void Mat::convertTo( OutputArray m, int rtype, double alpha=1, double beta=0 ) const;
 ```
 
@@ -693,7 +693,7 @@ waitKey();
 
 ## 3.9 图片混合
 
-```
+```cpp
 CV_EXPORTS_W void addWeighted(InputArray src1, double alpha, InputArray src2,
                               double beta, double gamma, OutputArray dst, int dtype = -1);
 ```
@@ -714,7 +714,7 @@ dtype(destination type)：输出图片的数据类型，-1表示与输入图片�
 
 ## 3.10 图片尺寸调整
 
-```
+```cpp
 CV_EXPORTS_W void resize( InputArray src, OutputArray dst,
                           Size dsize, double fx = 0, double fy = 0,
                           int interpolation = INTER_LINEAR );
@@ -734,7 +734,7 @@ interpolation：插值算法的选择
 
 ### 3.10.1 插值算法(not important)
 
-```
+```cpp
 enum InterpolationFlags{
     /** nearest neighbor interpolation */
     INTER_NEAREST        = 0,
@@ -779,7 +779,7 @@ enum InterpolationFlags{
 
 ## 3.11 图像金字塔（常用于神经网络的池化层，对图像进行成倍的放大或缩小）
 
-```
+```cpp
 CV_EXPORTS_W void pyrDown( InputArray src, OutputArray dst,
                            const Size& dstsize = Size(), int borderType = BORDER_DEFAULT );
 //缩小一倍
@@ -793,7 +793,7 @@ dstsize(destination size)：输出图片的尺寸，默认自动调整
 
 borderType：边界填充方式，默认为黑边。如果没有设置dstsize，则不会出现黑边，因为已经进行了自动调整
 
-```
+```cpp
 CV_EXPORTS_W void pyrUp( InputArray src, OutputArray dst,
                          const Size& dstsize = Size(), int borderType = BORDER_DEFAULT );
 //放大一倍
@@ -809,7 +809,7 @@ borderType：边界填充方式，默认为黑边。如果没有设置dstsize，
 
 ## 3.12 二值化（对灰度图）
 
-```
+```cpp
 CV_EXPORTS_W double threshold( InputArray src, OutputArray dst,
                                double thresh, double maxval, int type );
 ```
@@ -826,7 +826,7 @@ type：阈值类型
 
 ### 3.12.1 阈值类型
 
-```
+```cpp
 enum ThresholdTypes {
     THRESH_BINARY     = 0, //!< \f[\texttt{dst} (x,y) =  \fork{\texttt{maxval}}{if \(\texttt{src}(x,y) > \texttt{thresh}\)}{0}{otherwise}\f]
     THRESH_BINARY_INV = 1, //!< \f[\texttt{dst} (x,y) =  \fork{0}{if \(\texttt{src}(x,y) > \texttt{thresh}\)}{\texttt{maxval}}{otherwise}\f]
@@ -873,7 +873,7 @@ enum ThresholdTypes {
 
 ### 3.13.1 方式一
 
-```
+```cpp
 inline
 Mat Mat::operator()( const Rect& roi ) const
 {
@@ -883,7 +883,7 @@ Mat Mat::operator()( const Rect& roi ) const
 
 以下为实例
 
-```
+```cpp
 Mat xuenai = imread("xuenai.jpg");
 resize(xuenai,xuenai,Size(1000,1000));
 imshow("xuenai", xuenai);
@@ -894,13 +894,13 @@ waitKey();
 
 ### 3.13.2 方式二
 
-```
+```cpp
 Mat::Mat(const Mat& m, const Rect& roi);
 ```
 
 以下为实例
 
-```
+```cpp
 Mat xuenai = imread("xuenai.jpg");
 resize(xuenai,xuenai,Size(1000,1000));
 imshow("xuenai", xuenai);
@@ -913,7 +913,7 @@ waitKey();
 
 ### 3.13.3 Rect类构造
 
-```
+```cpp
 template<typename _Tp> inline
 Rect_<_Tp>::Rect_(_Tp _x, _Tp _y, _Tp _width, _Tp _height)
     : x(_x), y(_y), width(_width), height(_height) {}
@@ -936,7 +936,7 @@ Rect_<_Tp>::Rect_(const Point_<_Tp>& pt1, const Point_<_Tp>& pt2)
 
 ### 3.14.1 翻转
 
-```
+```cpp
 CV_EXPORTS_W void flip(InputArray src, OutputArray dst, int flipCode);
 ```
 
@@ -954,7 +954,7 @@ flipcode<0;//上下加左右翻转,等价于旋转180°
 
 #### 效果
 
-```
+```cpp
 Mat xuenai = imread("xuenai.jpg");
 imshow("xuenai", xuenai);
 Mat xuenai_flip(xuenai.size(), xuenai.type());
@@ -967,7 +967,7 @@ waitKet();
 
 ### 3.14.2 90°旋转
 
-```
+```cpp
 CV_EXPORTS_W void rotate(InputArray src, OutputArray dst, int rotateCode);
 enum RotateFlags {
     ROTATE_90_CLOCKWISE = 0, //!<Rotate 90 degrees clockwise
@@ -984,7 +984,7 @@ rotateCode：旋转类型
 
 #### 效果
 
-```
+```cpp
 Mat xuenai = imread("xuenai.jpg");
 imshow("xuenai", xuenai);
 Mat xuenai_rotate(xuenai.size(), xuenai.type());
@@ -997,7 +997,7 @@ waitKet();
 
 ## 3.15 仿射变换与透射变换
 
-```
+```cpp
 CV_EXPORTS_W void warpAffine( InputArray src, OutputArray dst,
                               InputArray M, Size dsize,
                               int flags = INTER_LINEAR,
@@ -1019,11 +1019,32 @@ borderMode：边界外推法
 
 borderValue：填充边界的值
 
+```cpp
+CV_EXPORTS_W void warpPerspective( InputArray src, OutputArray dst,
+                                   InputArray M, Size dsize,
+                                   int flags = INTER_LINEAR,
+                                   int borderMode = BORDER_CONSTANT,
+                                   const Scalar& borderValue = Scalar());
+```
+src(source)：输入图片
+
+dst(destination)：输出图片
+
+M：变换矩阵
+
+dsize(destination size)：输出图片的尺寸，**若不对输出图片的尺寸进行调整，那么很可能会出现黑边**
+
+flags：插值算法
+
+borderMode：边界外推法
+
+borderValue：填充边界的值
+
 ### 3.15.1 平移
 
 只需将变换矩阵M设置成如下形式：
 
-```
+```cpp
 float delta_x=200,delta_y=200;
 float  M_values[]={1,0,delta_x,
                    0,1,delta_y};
@@ -1040,7 +1061,7 @@ M：**必须是CV_32F，不能用逗号式分隔创建**
 
 #### 效果
 
-```
+```cpp
 Mat xuenai = imread("xuenai.jpg");
 imshow("xuenai",xuenai);
 double  M_values[]={1,0,200,
@@ -1058,7 +1079,7 @@ waitKet();
 
 #### 获得变换矩阵M
 
-```
+```cpp
 inline
 Mat getRotationMatrix2D(Point2f center, double angle, double scale)
 {
@@ -1074,7 +1095,7 @@ scale：生成图与原图之比
 
 #### 效果
 
-```
+```cpp
 Mat xuenai = imread("xuenai.jpg");
 imshow("xuenai", xuenai);
 Mat M= getRotationMatrix2D(Point2f(xuenai.cols/2,xuenai.rows/2),45,1);
@@ -1089,7 +1110,7 @@ imshow("xuenai_flip",xuenai_rotate);
 
 #### 获得变换矩阵M
 
-```
+```cpp
 CV_EXPORTS Mat getAffineTransform( const Point2f src[], const Point2f dst[] );
 ```
 
@@ -1097,11 +1118,13 @@ src[](source[])：输入图片的**坐标点集，含三个坐标点**
 
 dst[](destination[])：三个坐标点变换的**目标位置**
 
+**三个点要一一对应**
+
 ### 3.15.4 透射（破坏几何关系）
 
 #### 已知变换后图片，逆推变换矩阵M
 
-```
+```cpp
 CV_EXPORTS_W Mat getPerspectiveTransform(InputArray src, InputArray dst, int solveMethod = DECOMP_LU);
 ```
 
@@ -1111,7 +1134,7 @@ dst(destination)：输出图片
 
 #### 获得变换矩阵M
 
-```
+```cpp
 CV_EXPORTS Mat getPerspectiveTransform(const Point2f src[], const Point2f dst[], int solveMethod = DECOMP_LU);
 ```
 
@@ -1119,19 +1142,38 @@ src[](source[])：输入图片的**坐标点集，含四个坐标点**
 
 dst[](destination[])：四个坐标点变换的**目标位置**
 
+**四个点要一一对应**
+
+####  效果
+
+```cpp
+        Mat origin = imread("origin.jpg");
+        Point2f point2F_origin[4]={Point2f (405,105),Point2f(2469,217),Point2f(2573,3489),Point2f(349,3547)};
+        Point2f point2F_tansform[4]={Point2f (0,0),Point2f(2500,0),Point2f(2500,3500),Point2f(0,3500)};
+        Mat M=getPerspectiveTransform(point2F_origin,point2F_tansform);
+        Mat transfrom(origin.size(),origin.type());
+        warpPerspective(origin,transfrom,M,Size(2500,3500));
+        resize(origin,origin,Size(500,700));
+        resize(transfrom,transfrom,Size(500,700));
+        imshow("origin",origin);
+        imshow("transform",transfrom);
+```
+![在这里插入图片描述](https://img-blog.csdnimg.cn/974f93dbdde4431a8218245816741fd3.png#pic_center)
+
+
 # 4.滤波及边缘检测
 
 ## 4.1 均值滤波
 
 ### 4.1.1 卷积核形状
 
-```
+```cpp
 Mat kernal=Mat::ones(Size(ksize,ksize),CV_64F)/(ksize*ksize);
 ```
 
 ### 4.1.2 API
 
-```
+```cpp
 CV_EXPORTS_W void blur( InputArray src, OutputArray dst,
                         Size ksize, Point anchor = Point(-1,-1),
                         int borderType = BORDER_DEFAULT );
@@ -1149,7 +1191,7 @@ borderType：边界填充方式，默认为黑边
 
 ### 4.1.3 效果
 
-```
+```cpp
 Mat xuenai = imread("xuenai.jpg");
 imshow("xuenai",xuenai);
 Mat xuenai_blur(xuenai.size(),xuenai.type());
@@ -1174,7 +1216,7 @@ waitKet();
 
 代码实现（不区分sigmaX与sigmaY）
 
-```
+```cpp
 void GetGaussianKernel(Mat kernal, const int ksize,const double sigma)  
 {  
     const double PI=4.0*atan(1.0); //圆周率π赋值  
@@ -1202,7 +1244,7 @@ void GetGaussianKernel(Mat kernal, const int ksize,const double sigma)
 
 ### 4.2.2 API
 
-```
+```cpp
 CV_EXPORTS_W void GaussianBlur( InputArray src, OutputArray dst, Size ksize,
                                 double sigmaX, double sigmaY = 0,
                                 int borderType = BORDER_DEFAULT );
@@ -1222,7 +1264,7 @@ borderType：边界填充方式，默认为黑边
 
 ### 4.2.3 效果
 
-```
+```cpp
     Mat xuenai = imread("xuenai.jpg");
     imshow("xuenai",xuenai);
     Mat xuenai_Gauss(xuenai.size(),xuenai.type());
@@ -1241,7 +1283,7 @@ borderType：边界填充方式，默认为黑边
 
 ### 4.3.2 API
 
-```
+```cpp
 CV_EXPORTS_W void medianBlur( InputArray src, OutputArray dst, int ksize );
 ```
 
@@ -1253,7 +1295,7 @@ ksize(kernal size)：卷积核边长，**必须是正奇数**
 
 ### 4.3.3 效果
 
-```
+```cpp
     Mat xuenai = imread("xuenai.jpg");
     imshow("xuenai",xuenai);
     Mat xuenai_median(xuenai.size(),xuenai.type());
@@ -1274,7 +1316,7 @@ ksize(kernal size)：卷积核边长，**必须是正奇数**
 
 ### 4.4.2 API
 
-```
+```cpp
 CV_EXPORTS_W void bilateralFilter( InputArray src, OutputArray dst, int d,
                                    double sigmaColor, double sigmaSpace,
                                    int borderType = BORDER_DEFAULT );
@@ -1294,7 +1336,7 @@ borderType：边界填充方式，默认为黑边
 
 ### 4.4.3 效果
 
-```
+```cpp
     Mat xuenai = imread("xuenai.jpg");
     imshow("xuenai",xuenai);
     Mat xuenai_bilateral(xuenai.size(),xuenai.type());
@@ -1307,7 +1349,7 @@ borderType：边界填充方式，默认为黑边
 
 ## 4.5 获取用来形态学操作的滤波器
 
-```
+```cpp
 CV_EXPORTS_W Mat getStructuringElement(int shape, Size ksize, Point anchor = Point(-1,-1));
 enum MorphShapes {
     MORPH_RECT    = 0, //!< a rectangular structuring element:  \f[E_{ij}=1\f]
@@ -1334,7 +1376,7 @@ anchor：滤波器中心像素位置，取（-1，-1）表示几何中心
 
 ### 4.6.2 腐蚀API
 
-```
+```cpp
 CV_EXPORTS_W void erode( InputArray src, OutputArray dst, InputArray kernel,
                          Point anchor = Point(-1,-1), int iterations = 1,
                          int borderType = BORDER_CONSTANT,
@@ -1357,7 +1399,7 @@ borderValue：填充边界的值
 
 ### 4.6.3 效果
 
-```
+```cpp
     Mat xuenai = imread("xuenai.jpg");
 
     Mat xuenai_gray(xuenai.size(),xuenai.type());
@@ -1378,7 +1420,7 @@ borderValue：填充边界的值
 
 ### 4.6.4 膨胀API
 
-```
+```cpp
 CV_EXPORTS_W void dilate( InputArray src, OutputArray dst, InputArray kernel,
                           Point anchor = Point(-1,-1), int iterations = 1,
                           int borderType = BORDER_CONSTANT,
@@ -1401,7 +1443,7 @@ borderValue：填充边界的值
 
 ### 4.6.5 效果
 
-```
+```cpp
     Mat xuenai = imread("xuenai.jpg");
 
     Mat xuenai_gray(xuenai.size(),xuenai.type());
@@ -1424,7 +1466,7 @@ borderValue：填充边界的值
 
 ### 4.7.1 API
 
-```
+```cpp
 CV_EXPORTS_W void morphologyEx( InputArray src, OutputArray dst,
                                 int op, InputArray kernel,
                                 Point anchor = Point(-1,-1), int iterations = 1,
@@ -1450,7 +1492,7 @@ borderValue：填充边界的值
 
 ### 4.7.2 变换类型
 
-```
+```cpp
 enum MorphTypes{
     MORPH_ERODE    = 0, //腐蚀
 
@@ -1479,7 +1521,7 @@ enum MorphTypes{
 
 #### 效果
 
-```
+```cpp
     Mat xuenai = imread("xuenai.jpg");
     Mat xuenai_gray(xuenai.size(),xuenai.type());
     cvtColor(xuenai,xuenai_gray,COLOR_BGR2GRAY);
@@ -1505,7 +1547,7 @@ enum MorphTypes{
 
 #### 效果
 
-```
+```cpp
     Mat xuenai = imread("xuenai.jpg");
 
     Mat xuenai_gray(xuenai.size(),xuenai.type());
@@ -1532,7 +1574,7 @@ enum MorphTypes{
 
 #### 效果
 
-```
+```cpp
     Mat xuenai = imread("xuenai.jpg");
 
     Mat xuenai_gray(xuenai.size(),xuenai.type());
@@ -1559,7 +1601,7 @@ enum MorphTypes{
 
 #### 效果
 
-```
+```cpp
     Mat xuenai = imread("xuenai.jpg");
 
     Mat xuenai_gray(xuenai.size(),xuenai.type());
@@ -1586,7 +1628,7 @@ enum MorphTypes{
 
 #### 效果
 
-```
+```cpp
     Mat xuenai = imread("xuenai.jpg");
 
     Mat xuenai_gray(xuenai.size(),xuenai.type());
@@ -1706,7 +1748,7 @@ dst(destination)：输出图片
 
 ### 4.9.1 卷积核形状（ksize=3）
 
-```
+```cpp
 Mat kernalX=Mat_<int>(Size(3,3))<<(-1,0,1
                                     -2,0,2
                                     -1,0,1);
@@ -1717,7 +1759,7 @@ Mat kernalY=Mat_<int>(Size(3,3))<<(-1,-2,1
 
 ### 4.9.2 API
 
-```
+```cpp
 CV_EXPORTS_W void Sobel( InputArray src, OutputArray dst, int ddepth,
                          int dx, int dy, int ksize = 3,
                          double scale = 1, double delta = 0,
@@ -1751,7 +1793,7 @@ borderType：边界填充方式，默认为黑边
 
 ### 4.9.4 同时在x,y方向上调用Sobel和分开调用的效果对比
 
-```
+```cpp
 Mat xuenai = imread("xuenai.jpg");
 imshow("xuenai", xuenai);
 
@@ -1786,7 +1828,7 @@ waitKey();
 
 虽然Sobel算子可以有效的提取图像边缘，但是对图像中较弱的边缘提取效果较差。因此为了能够有效的提取出较弱的边缘，需要将像素值间的差距增大，因此引入Scharr算子。Scharr算子是对Sobel算子差异性的增强，因此两者之间的在检测图像边缘的原理和使用方式上相同。
 
-```
+```cpp
 Mat kernalX=Mat_<int>(Size(3,3))<<(-3,0,3
                                     -10,0,10
                                     -3,0,3);
@@ -1797,7 +1839,7 @@ Mat kernalY=Mat_<int>(Size(3,3))<<(-3,-10,3
 
 ### 4.10.2 API
 
-```
+```cpp
 CV_EXPORTS_W void Scharr( InputArray src, OutputArray dst, int ddepth,
                           int dx, int dy, double scale = 1, double delta = 0,
                           int borderType = BORDER_DEFAULT );
@@ -1830,7 +1872,7 @@ borderType：边界填充方式，默认为黑边
 
 ### 4.11.1 卷积核形状（ksize=3）
 
-```
+```cpp
 Mat kernal=Mat_<int>(Size(3,3))<<(0,-1,0
                                    -1,4,-1
                                    0,-1,0);
@@ -1840,7 +1882,7 @@ Laplacian算子的卷积核形状决定了它 **对噪声非常敏感** ，因�
 
 ### 4.11.2 API
 
-```
+```cpp
 CV_EXPORTS_W void Laplacian( InputArray src, OutputArray dst, int ddepth,
                              int ksize = 1, double scale = 1, double delta = 0,
                              int borderType = BORDER_DEFAULT );
@@ -1869,7 +1911,7 @@ borderType：边界填充方式，默认为黑边
 
 ### 4.12.1 API
 
-```
+```cpp
 CV_EXPORTS_W void Canny( InputArray image, OutputArray edges,
                          double threshold1, double threshold2,
                          int apertureSize = 3, bool L2gradient = false );
@@ -1896,7 +1938,7 @@ L2gradient：计算图像梯度幅度的标识，默认为false，表示L1范数
 
 ### 4.12.3 效果
 
-```
+```cpp
     Mat xuenai = imread("xuenai.jpg");
     imshow("xuenai",xuenai);
 
@@ -1975,7 +2017,7 @@ saturateRange：只针对均匀分布有效。当为真的时候，会先把产�
 ## 5.1 直线
 ### 5.1.1 API
 
-```
+```cpp
 CV_EXPORTS_W void line(InputOutputArray img, Point pt1, Point pt2, const Scalar& color,int thickness = 1, int lineType = LINE_8, int shift = 0);
 ```
 
@@ -1995,7 +2037,7 @@ shift：坐标点小数点位数(not important)
 
 ### 5.1.2连通类型
 
-```
+```cpp
 enum LineTypes {
     FILLED  = -1,
     LINE_4  = 4, //!< 4-connected line
@@ -2010,7 +2052,7 @@ enum LineTypes {
 
 ### 5.2.1API
 
-```
+```cpp
 CV_EXPORTS_W void rectangle(InputOutputArray img, Point pt1, Point pt2,
                           const Scalar& color, int thickness = 1,
                           int lineType = LINE_8, int shift = 0);
@@ -2030,7 +2072,7 @@ lineType：连通类型
 
 shift：坐标点小数点位数(not important)
 
-```
+```cpp
 CV_EXPORTS_W void rectangle(InputOutputArray img, Rect rec,
                           const Scalar& color, int thickness = 1,
                           int lineType = LINE_8, int shift = 0);
@@ -2052,7 +2094,7 @@ shift：坐标点小数点位数(not important)
 
 ### 5.3.1 API
 
-```
+```cpp
 CV_EXPORTS_W void circle(InputOutputArray img, Point center, int radius,
                        const Scalar& color, int thickness = 1,
                        int lineType = LINE_8, int shift = 0);
@@ -2076,7 +2118,7 @@ shift：坐标点小数点位数(not important)
 
 ### 5.4.1 API
 
-```
+```cpp
 CV_EXPORTS_W void ellipse(InputOutputArray img, Point center, Size axes,
                         double angle, double startAngle, double endAngle,
                         const Scalar& color, int thickness = 1,
@@ -2107,7 +2149,7 @@ shift：坐标点小数点位数(not important)
 
 ### 5.4.2 效果
 
-```
+```cpp
 Mat canvas(Size(1000,1000),CV_8U,Scalar(255));
 ellipse(canvas,Point2f(500,500),Size(50,100),0,0,90,Scalar(0,0,0),5);
 imshow("canvas",canvas);
@@ -2138,7 +2180,7 @@ waitKey();
 
 ### 5.5.1 API(通过RotatedRect类和line函数实现)
 
-```
+```cpp
 class CV_EXPORTS RotatedRect
 {
 public:
@@ -2178,7 +2220,7 @@ public:
 
 下面是自定义的一个快捷画斜矩形的函数
 
-```
+```cpp
 void drawRotatedRect(InputOutputArray img, RotatedRect rRect,const Scalar& color, int thickness = 1,int lineType = LINE_8, int shift = 0){
     Point2f vertices[4];
     rRect.points(vertices);
@@ -2194,7 +2236,7 @@ void drawRotatedRect(InputOutputArray img, RotatedRect rRect,const Scalar& color
 
 ### 6.1.1 API
 
-```
+```cpp
 CV_EXPORTS int createTrackbar(const String& trackbarname, const String& winname,
                               int* value, int count,
                               TrackbarCallback onChange = 0,
@@ -2211,7 +2253,7 @@ count：欲控制的变量的最大值（最小为0）
 
 onChange：回调函数，默认为空。如果想要传入，那么其 **参数是固定的** 。
 
-```
+```cpp
 void onChange(int,void*);
 ```
 
@@ -2219,7 +2261,7 @@ userdata：万能指针，默认为空。如果想要传入，通常用一个类
 
 ## 6.2 getTrackbarPos获得滚动条当前的值
 
-```
+```cpp
 CV_EXPORTS_W int getTrackbarPos(const String& trackbarname, const String& winname);
 ```
 
@@ -2235,7 +2277,7 @@ winname(window name)：窗体名字
 
 ### 6.3.2 效果
 
-```
+```cpp
     Mat xuenai = imread("xuenai.jpg");
     imshow("xuenai",xuenai);
 
@@ -2263,7 +2305,7 @@ winname(window name)：窗体名字
 
 ### 6.4.2 效果
 
-```
+```cpp
 class TrackbarUserdata{
 public:
     Mat input;
@@ -2311,7 +2353,7 @@ int main(){
 
 ### 7.1.1 API
 
-```
+```cpp
 CV_EXPORTS_W void findContours( InputArray image, OutputArrayOfArrays contours,
                               OutputArray hierarchy, int mode,
                               int method, Point offset = Point());
@@ -2345,7 +2387,7 @@ offset：额外偏移量，**在每一个检测出的轮廓点上加上该偏移
 
 ### 7.1.2 轮廓层级检测模式：索引号（层级）
 
-```
+```cpp
 enum RetrievalModes {
     RETR_EXTERNAL  = 0,
     RETR_LIST      = 1,
@@ -2401,7 +2443,7 @@ CHAIN_APPROX_TC89_L1，CV_CHAIN_APPROX_TC89_KCOS：使用tehChinl chain 近似�
 
 ### 7.2.1 API
 
-```
+```cpp
 CV_EXPORTS_W void drawContours( InputOutputArray image, InputArrayOfArrays contours,
                               int contourIdx, const Scalar& color,
                               int thickness = 1, int lineType = LINE_8,
@@ -2435,11 +2477,11 @@ offset：额外偏移量。
 
 ### 7.3.1 面积（非原地算法）
 
-```
+```cpp
 CV_EXPORTS_W double contourArea( InputArray contour, bool oriented = false );
 ```
 
-contour：某**一个**轮廓，数据类型vector<Point>
+contour：某**一个**轮廓，数据类型vector\<Point\>
 
 oriented: 有方向的区域标志。(not important)
 
@@ -2450,23 +2492,23 @@ oriented: 有方向的区域标志。(not important)
 
 ### 7.3.2周长（非原地算法）
 
-```
+```cpp
 CV_EXPORTS_W double arcLength( InputArray curve, bool closed );
 ```
 
-curve：某**一个**轮廓，数据类型vector<Point>
+curve：某**一个**轮廓，数据类型vector\<Point\>
 
 closed：轮廓是否是闭合的。
 
 ## 7.4 多边形逼近
 
-```
+```cpp
 CV_EXPORTS_W void approxPolyDP( InputArray curve,
                                 OutputArray approxCurve,
                                 double epsilon, bool closed );
 ```
 
-curve：某**一个**轮廓，数据类型vector<Point>
+curve：某**一个**轮廓，数据类型vector\<Point\>
 
 approxCurve：输出多边形的点集，数据类型vector<Point>
 
@@ -2476,14 +2518,14 @@ closed：轮廓是否是闭合的。
 
 ## 7.5 凸包
 
-```
+```cpp
 CV_EXPORTS_W void convexHull( InputArray points, OutputArray hull,
                               bool clockwise = false, bool returnPoints = true );
 ```
 
 points：输入点集
 
-hull：输出凸包。**数据类型取决于returnPoints，vector<Point>或vector<int>**
+hull：输出凸包。 **数据类型取决于returnPoints，vector\<Point\>或vector\<int\>**
 
 clockwise：拟合凸包的直线的转动方向，TRUE为顺时针，否则为逆时针。
 
@@ -2493,7 +2535,7 @@ returnPoints：若为true，则在hull中存储点的坐标。若为false，则�
 
 ### 7.6.1最小外接矩形（返回RotatedRect）
 
-```
+```cpp
 CV_EXPORTS_W RotatedRect minAreaRect( InputArray points );
 ```
 
@@ -2517,7 +2559,6 @@ CV_EXPORTS_W void matchTemplate( InputArray image, InputArray templ,
                                  OutputArray result, int method, InputArray mask = noArray() );
 ```
 image：输入图像
-
 
 templ(template)：模板图像
 
@@ -2572,6 +2613,7 @@ TM_CCOEFF_NORMED：计算归一化相关系数，计算出来的值越接近1，
 
         rectangle(xuenai,Rect(temLoc.x,temLoc.y,templ.cols,templ.rows),Scalar(0,0,255));
         imshow("xuenai_match",xuenai);
+        waitKey();
 ```
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/906b5f8c8b4446eca64b3f9883b6188c.png#pic_center)
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/8be117c0005b4843bd1e480a09cc7f7d.png#pic_center)
@@ -2599,6 +2641,7 @@ TM_CCOEFF_NORMED：计算归一化相关系数，计算出来的值越接近1，
 
         rectangle(xuenai,Rect(temLoc.x,temLoc.y,templ.cols,templ.rows),Scalar(0,0,255));
         imshow("xuenai_match",xuenai);
+        waitKey();
 ```
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/f4c272690da049688bea5bbd14db6a22.png#pic_center)
 
@@ -2623,6 +2666,7 @@ TM_CCOEFF_NORMED：计算归一化相关系数，计算出来的值越接近1，
 
         rectangle(xuenai,Rect(temLoc.x,temLoc.y,templ.cols,templ.rows),Scalar(0,0,255));
         imshow("xuenai_match",xuenai);
+        waitKey();
 ```
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/a7a6d393150147b3916fc8450633232d.png#pic_center)
 ##  8.2 cornerHarris（对灰度图）
@@ -2720,7 +2764,72 @@ borderType ：边界填充方式，默认为黑边。
                     ptr++;
                 }
             }
+            imshow("xuenai_harris",harris_result);
+            if (waitKey(0) == 'q')break;
+        }
 ```
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/16d050f0065d4586b3b70bcfc00e9baf.png#pic_center)
+###  8.2.5 优点与缺点
+####  测试代码
+```cpp
+        Mat xuenai = imread("xuenai.jpg");
+        imshow("xuenai", xuenai);
+        namedWindow("panel");
+        createTrackbar("threshold","panel", nullptr,255);
+        createTrackbar("angle","panel", nullptr,360);
+        createTrackbar("width","panel", nullptr,1000);
+        createTrackbar("height","panel", nullptr,1000);
+
+        while (1) {
+            int thres = getTrackbarPos("threshold", "panel");
+            int width = getTrackbarPos("width", "panel");
+            if(thres==0)thres=100;
+
+            int height = getTrackbarPos("height", "panel");
+            if(height==0)height=1000;
+
+            int angle = getTrackbarPos("angle","panel");
+            if(width==0)width=1000;
+
+            Mat xuenai_harris, xuenai_transform=xuenai.clone();
+
+            resize(xuenai_transform,xuenai_transform,Size(width,height));
+
+            Mat M= getRotationMatrix2D(Point2f(xuenai.cols/2,xuenai.rows/2),angle,1);
+            warpAffine(xuenai_transform,xuenai_transform,M,xuenai_transform.size());
+
+            Mat xuenai_gray(xuenai.size(),xuenai.type());
+            cvtColor(xuenai_transform,xuenai_gray,COLOR_BGR2GRAY);
+
+            cornerHarris(xuenai_gray,xuenai_harris,2,3,0.04);
+            normalize(xuenai_harris,xuenai_harris,0,255,NORM_MINMAX,-1);
+            convertScaleAbs(xuenai_harris,xuenai_harris);
+
+            Mat harris_result=xuenai_transform.clone();
+            for(int i=0;i<xuenai_harris.rows;i++){
+                uchar * ptr =xuenai_harris.ptr(i);
+                for(int j=0;j<xuenai_harris.cols;j++){
+                    int value=(int) *ptr;
+                    if(value>thres){
+                        circle(harris_result, Point(j,i), 3, Scalar(0, 0, 255));
+                    }
+                    ptr++;
+                }
+            }
+            imshow("xuenai_harris",harris_result);
+            if (waitKey(0) == 'q')break;
+        }
+   ```
+
+
+####  图片旋转，角点不变
+![在这里插入图片描述](https://img-blog.csdnimg.cn/3023822133ad489fbcca66b8a692544e.png#pic_center)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/f7bcbf5e918d4488bc08310ab5e89760.png#pic_center)
+
+####  图片缩放，角点改变
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/bf2c05b6a7f1425893df5c0dba046a9f.png#pic_center)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/fa1d6fa2b4b34a4bb64bb670cbe46521.png#pic_center)
+
 ##  8.3  Shi-Tomasi（对灰度图）
 
